@@ -244,8 +244,11 @@ img { display: block; max-width: 100%; }
 .footer-top {
   background: var(--footer-bg);
   border-top: 1px solid var(--border);
-  display: flex; justify-content: space-between; gap: 40px;
-  padding: 48px 40px 32px;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto auto;
+  align-items: start;
+  gap: 80px;
+  padding: 56px 40px 40px;
 }
 .brand-col { max-width: 300px; display: flex; flex-direction: column; gap: 12px; }
 .brand-col .logo { font-size: 18px; font-weight: 700; color: var(--text-1); }
@@ -378,10 +381,10 @@ img { display: block; max-width: 100%; }
 /* ============================================================
    分类 / 标签归档页
    ============================================================ */
-.archive-header { padding: 64px var(--pad-x) 40px; display: flex; flex-direction: column; gap: 12px; }
+.archive-header { padding: 72px var(--pad-x) 64px; display: flex; flex-direction: column; gap: 12px; }
 .archive-header h1 { font-size: 32px; font-weight: 700; }
 .archive-header p { font-size: 15px; color: var(--text-2); }
-.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 40px var(--pad-x) 0; }
+.cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; padding: 64px var(--pad-x) 0; }
 .cat-card {
   background: var(--card); border: 1px solid var(--border); border-radius: var(--r-card);
   padding: 24px; box-shadow: var(--shadow-card); display: flex; flex-direction: column; gap: 16px;
@@ -397,7 +400,7 @@ img { display: block; max-width: 100%; }
 .cat-card .c-count { font-size: 14px; color: var(--text-ph); }
 .cat-card .c-desc { font-size: 13px; color: var(--text-3); line-height: 1.55; }
 
-.archive-tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; padding: 40px var(--pad-x) 0; }
+.archive-tag-cloud { display: flex; flex-wrap: wrap; gap: 12px; padding: 64px var(--pad-x) 0; }
 .archive-tag-cloud .tag-chip { font-size: 14px; padding: 8px 16px; }
 
 /* ============================================================
