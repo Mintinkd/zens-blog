@@ -1,0 +1,25 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts', (e) => !e.data.draft);
+  const tags = [...new Set(posts.flatMap((p) => p.data.tags))];
+  return tags.map((name) => ({ params: { name }, props: { name } }));
+}
+
+const tagName = decodeURIComponent(Astro.params.name ?? '');
+const posts = (await getCollection('posts', (e) => !e.data.draft && e.data.tags.includes(tagName))).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout title={`${tagName} · 标签归档`}>
+  <header class="archive-header">
+    <h1>{tagName}</h1>
+    <p>共 {posts.length} 篇文章</p>
+  </header>
+  <div class="post-grid" style="padding: 24px var(--pad-x) 48px;">
+    {posts.map((p) => <ArticleCard post={p} />)}
+  </div>
+</BaseLayout>

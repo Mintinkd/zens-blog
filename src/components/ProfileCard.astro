@@ -1,0 +1,19 @@
+---
+import { SITE } from '../data/site';
+
+interface Props {
+  author?: typeof SITE.author;
+}
+const author = Astro.props.author ?? SITE.author;
+---
+<div class="side-card">
+  <div class="profile">
+    <div class="avatar">{author.initial}</div>
+    <div>
+      <div class="name">{author.name}</div>
+      <div class="role">{author.role}</div>
+    </div>
+  </div>
+  <p style="font-size:13px;color:var(--text-3);margin-top:12px">{author.bio}</p>
+  <a class="btn btn-primary" style="width:100%;margin-top:14px" href="/about">查看关于我</a>
+</div>

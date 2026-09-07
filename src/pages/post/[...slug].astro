@@ -1,0 +1,111 @@
+---
+import { getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCard from '../../components/ArticleCard.astro';
+import TagChip from '../../components/TagChip.astro';
+import { SITE } from '../../data/site';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('posts');
+  return posts.map((post) => ({ params: { slug: post.id }, props: { post } }));
+}
+
+const { post } = Astro.props;
+const { Content, headings } = await render(post);
+const { title, description, category, cover, pubDate, readingTime, tags } = post.data;
+const dateStr = pubDate.toISOString().slice(0, 10);
+
+const all = (await getCollection('posts', (e) => !e.data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+const sameCat = all.filter((p) => p.id !== post.id && p.data.category === category);
+const others = all.filter((p) => p.id !== post.id && p.data.category !== category);
+const related = [...sameCat, ...others].slice(0, 3);
+
+const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+---
+<BaseLayout title={`${title} · 林深小筑`} description={description}>
+  <div class="breadcrumb">
+    <a href="/">首页</a> /
+    <a href={`/category/${encodeURIComponent(category)}`}>{category}</a> / {title}
+  </div>
+
+  <div class="article-wrap">
+    <div class="article-head">
+      <span class="cat-pill">{category}</span>
+      <h1>{title}</h1>
+      <div class="meta-row">
+        <div class="avatar">{SITE.author.initial}</div>
+        <span class="author">{SITE.author.name}</span>
+        <span>·</span>
+        <span>{dateStr} · {readingTime ?? '5 分钟'}阅读</span>
+      </div>
+    </div>
+
+    <div class={`article-cover cover--${cover}`}></div>
+
+    <div class="body-row">
+      <article class="article-content">
+        <Content />
+      </article>
+
+      <aside class="sidebar">
+        <div class="side-card">
+          <h3>目录</h3>
+          <nav class="toc">
+            {toc.map((h) => <a href={`#${h.slug}`}>{h.text}</a>)}
+          </nav>
+        </div>
+        <div class="side-card">
+          <h3>分享</h3>
+          <div class="tag-cloud">
+            <span class="tag-chip">复制链接</span>
+            <span class="tag-chip">微博</span>
+            <span class="tag-chip">微信</span>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </div>
+
+  <div class="tags-row">
+    {tags.map((t) => <TagChip tag={t} />)}
+  </div>
+
+  <div class="author-card">
+    <div class="avatar">{SITE.author.initial}</div>
+    <div>
+      <div class="a-name">{SITE.author.name}</div>
+      <div class="a-role">{SITE.author.role}</div>
+    </div>
+    <div class="a-actions">
+      <a class="btn btn-primary" href="/about">查看关于我</a>
+      <button class="btn btn-ghost">关注作者</button>
+    </div>
+  </div>
+
+  <div class="related-head">相关文章</div>
+  <div class="related-grid">
+    {related.map((p) => <ArticleCard post={p} />)}
+  </div>
+
+  <section class="comments">
+    <h3>评论 (12)</h3>
+    <div class="comment">
+      <div class="avatar">阿</div>
+      <div><div class="c-name">阿杰</div><div class="c-text">收藏了，正好在重构主题系统，变量方案很清晰。</div></div>
+    </div>
+    <div class="comment reply">
+      <div class="avatar">{SITE.author.initial}</div>
+      <div><div class="c-name">{SITE.author.name}（作者）</div><div class="c-text">谢谢支持，后续会补充可访问性对比度的部分。</div></div>
+    </div>
+    <div class="comment">
+      <div class="avatar">小</div>
+      <div><div class="c-name">小林同学</div><div class="c-text">暗色模式下的代码块配色好评，读起来很舒服。</div></div>
+    </div>
+    <div class="comment-input">
+      <input type="text" placeholder="写下你的评论…" aria-label="评论" />
+      <button class="btn btn-primary">发表</button>
+    </div>
+  </section>
+</BaseLayout>

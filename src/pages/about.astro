@@ -1,0 +1,79 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { SITE } from '../data/site';
+
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const postCount = posts.length;
+const tagCount = new Set(posts.flatMap((p) => p.data.tags)).size;
+const catCount = new Set(posts.map((p) => p.data.category)).size;
+---
+<BaseLayout title="关于我 · 林深小筑">
+  <header class="about-hero">
+    <div class="avatar">{SITE.author.initial}</div>
+    <h1>{SITE.author.name}</h1>
+    <div class="role">{SITE.author.role}</div>
+    <div class="bio">{SITE.author.bio}</div>
+    <div class="actions">
+      <a class="btn btn-primary" href="/posts">浏览文章</a>
+      <a class="btn btn-ghost" href="mailto:hi@linshen.blog">邮件联系</a>
+    </div>
+  </header>
+
+  <div class="stats-bar">
+    <div class="stat"><div class="num">{postCount}</div><div class="label">篇文章</div></div>
+    <div class="stat"><div class="num">{tagCount}</div><div class="label">个标签</div></div>
+    <div class="stat"><div class="num">{catCount}</div><div class="label">个分类</div></div>
+    <div class="stat"><div class="num">12.6k</div><div class="label">次阅读</div></div>
+  </div>
+
+  <section class="about-section">
+    <h2>关于我</h2>
+    <p>我是林深，一名前端工程师与设计师。过去几年里，我在多家团队负责设计系统、组件库与前端架构的落地，相信好的工程与好的设计本是一体。</p>
+    <p>现在作为自由职业者，我帮助团队把设计语言转化为可维护的代码，也在这里记录自己的学习与思考。</p>
+  </section>
+
+  <section class="about-section">
+    <h2>技能</h2>
+    <div class="skills-grid">
+      <div class="skill-card"><h3>前端</h3><ul><li>HTML / CSS / JavaScript</li><li>React / Vue</li><li>TypeScript</li><li>构建与工程化</li></ul></div>
+      <div class="skill-card"><h3>设计</h3><ul><li>设计系统 / Token</li><li>组件库规范</li><li>排版与可访问性</li><li>Figma</li></ul></div>
+      <div class="skill-card"><h3>工具</h3><ul><li>Git / CI</li><li>Vite / Astro</li><li>自动化工作流</li><li>技术写作</li></ul></div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <h2>经历</h2>
+    <div class="timeline">
+      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-time">2026 - 至今</div><div class="tl-title">独立开发者</div><div class="tl-desc">为团队提供设计系统落地与前端架构咨询。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-time">2022 - 2025</div><div class="tl-title">高级前端工程师</div><div class="tl-desc">负责组件库与设计令牌体系，支撑多条产品线。</div></div></div>
+      <div class="tl-item"><div class="tl-dot"></div><div><div class="tl-time">2019 - 2022</div><div class="tl-title">前端工程师</div><div class="tl-desc">参与 Web 应用开发与性能优化。</div></div></div>
+    </div>
+  </section>
+
+  <section class="about-section">
+    <h2>联系方式</h2>
+    <div class="contact-grid">
+      <div class="contact-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 7L12 13L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="c-name">GitHub</div><div class="c-val">@linshen-dev</div>
+      </div>
+      <div class="contact-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="3" y="5" width="18" height="14" rx="2" stroke="currentColor" stroke-width="2"/><path d="M4 7L12 13L20 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="c-name">Mail</div><div class="c-val">hi@linshen.dev</div>
+      </div>
+      <div class="contact-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="2"/><path d="M9 10h6M9 14h4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/></svg>
+        <div class="c-name">Weibo</div><div class="c-val">@林深小屋</div>
+      </div>
+      <div class="contact-card">
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="16" height="16" rx="4" stroke="currentColor" stroke-width="2"/><path d="M9 9h6v6H9z" stroke="currentColor" stroke-width="2"/></svg>
+        <div class="c-name">WeChat</div><div class="c-val">林深小筑</div>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<style>
+  .contact-card svg { color: var(--text-3); }
+</style>

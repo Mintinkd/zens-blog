@@ -1,0 +1,34 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { CATEGORY_META } from '../../data/site';
+
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const counts = new Map<string, number>();
+posts.forEach((p) => counts.set(p.data.category, (counts.get(p.data.category) ?? 0) + 1));
+const categories = [...counts.entries()].map(([name, count], i) => {
+  const meta = CATEGORY_META[name];
+  return {
+    name,
+    count,
+    desc: meta?.desc ?? `共 ${count} 篇文章`,
+    badge: meta?.badge ?? `c${(i % 4) + 1}`,
+  };
+});
+---
+<BaseLayout title="分类归档 · 林深小筑">
+  <header class="archive-header">
+    <h1>全部分类</h1>
+    <p>按主题浏览全部文章 · 共 {categories.length} 个分类</p>
+  </header>
+  <div class="cat-grid">
+    {categories.map((c) => (
+      <a class="cat-card" href={`/category/${encodeURIComponent(c.name)}`}>
+        <div class={`cat-badge ${c.badge}`}>{c.name.slice(0, 1)}</div>
+        <div class="c-name">{c.name}</div>
+        <div class="c-count">{c.count} 篇文章</div>
+        <div class="c-desc">{c.desc}</div>
+      </a>
+    ))}
+  </div>
+</BaseLayout>

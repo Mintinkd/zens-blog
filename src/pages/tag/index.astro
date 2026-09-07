@@ -1,0 +1,19 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import TagChip from '../../components/TagChip.astro';
+
+const posts = await getCollection('posts', (e) => !e.data.draft);
+const counts = new Map<string, number>();
+posts.forEach((p) => p.data.tags.forEach((t) => counts.set(t, (counts.get(t) ?? 0) + 1)));
+const tags = [...counts.keys()].sort();
+---
+<BaseLayout title="标签归档 · 林深小筑">
+  <header class="archive-header">
+    <h1>全部标签</h1>
+    <p>通过标签发现相关主题 · 共 {tags.length} 个标签</p>
+  </header>
+  <div class="archive-tag-cloud">
+    {tags.map((t) => <TagChip tag={t} />)}
+  </div>
+</BaseLayout>

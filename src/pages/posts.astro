@@ -1,0 +1,18 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import ArticleCard from '../components/ArticleCard.astro';
+
+const posts = (await getCollection('posts', (e) => !e.data.draft)).sort(
+  (a, b) => b.data.pubDate.valueOf() - a.data.pubDate.valueOf()
+);
+---
+<BaseLayout title={`全部文章 · 林深小筑`}>
+  <header class="archive-header">
+    <h1>全部文章</h1>
+    <p>按发布时间排序 · 共 {posts.length} 篇</p>
+  </header>
+  <div class="post-grid" style="padding: 24px var(--pad-x) 48px;">
+    {posts.map((p) => <ArticleCard post={p} />)}
+  </div>
+</BaseLayout>
