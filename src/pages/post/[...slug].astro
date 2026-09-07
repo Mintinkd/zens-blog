@@ -23,6 +23,7 @@ const others = all.filter((p) => p.id !== post.id && p.data.category !== categor
 const related = [...sameCat, ...others].slice(0, 3);
 
 const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
+const twikooEnvId = import.meta.env.PUBLIC_TWIKOO_ENV_ID;
 ---
 <BaseLayout title={`${title} · 林深小筑`} description={description}>
   <div class="breadcrumb">
@@ -89,23 +90,25 @@ const toc = headings.filter((h) => h.depth >= 2 && h.depth <= 3);
     {related.map((p) => <ArticleCard post={p} />)}
   </div>
 
-  <section class="comments">
-    <h3>评论 (12)</h3>
-    <div class="comment">
-      <div class="avatar">阿</div>
-      <div><div class="c-name">阿杰</div><div class="c-text">收藏了，正好在重构主题系统，变量方案很清晰。</div></div>
-    </div>
-    <div class="comment reply">
-      <div class="avatar">{SITE.author.initial}</div>
-      <div><div class="c-name">{SITE.author.name}（作者）</div><div class="c-text">谢谢支持，后续会补充可访问性对比度的部分。</div></div>
-    </div>
-    <div class="comment">
-      <div class="avatar">小</div>
-      <div><div class="c-name">小林同学</div><div class="c-text">暗色模式下的代码块配色好评，读起来很舒服。</div></div>
-    </div>
-    <div class="comment-input">
-      <input type="text" placeholder="写下你的评论…" aria-label="评论" />
-      <button class="btn btn-primary">发表</button>
-    </div>
+  <section class="comments" id="comments">
+    {twikooEnvId ? (
+      <div id="twikoo"></div>
+    ) : (
+      <p class="comments-placeholder">评论功能即将上线 · 配置 Twikoo 后自动启用</p>
+    )}
   </section>
+
+  {twikooEnvId && (
+    <Fragment>
+      <script is:inline src="https://cdn.jsdelivr.net/npm/twikoo@1.6.42/dist/twikoo.all.min.js"></script>
+      <script is:inline define:vars={{ twikooEnvId }}>
+        twikoo.init({
+          envId: twikooEnvId,
+          el: '#twikoo',
+          path: location.pathname,
+        });
+      </script>
+    </Fragment>
+  )}
+
 </BaseLayout>
