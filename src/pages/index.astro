@@ -30,10 +30,13 @@ const hotTags = [...tagCount.entries()]
       </svg>
       <input type="text" placeholder="搜索文章、标签或作者…" aria-label="搜索" />
     </label>
+    <a href="#latest" class="hero-scroll" aria-label="向下滚动查看文章">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M6 13l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+    </a>
   </header>
 
   <div class="main-row">
-    <div class="posts-col">
+    <div class="posts-col" id="latest">
       <div class="section-head">
         <h2>最新文章</h2>
         <a class="more" href="/posts">查看全部</a>

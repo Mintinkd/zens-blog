@@ -125,23 +125,34 @@ img { display: block; max-width: 100%; }
 
 /* ---------- Hero ---------- */
 .hero {
-  padding: 80px var(--pad-x) 56px;
+  margin: 24px var(--pad-x) 0;
+  padding: 72px 56px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #0052D9 0%, #2B6FE0 55%, #00A6B8 100%);
+  color: #fff;
   display: flex; flex-direction: column; gap: 16px;
   align-items: flex-start;
+  position: relative; overflow: hidden;
 }
-.hero h1 { font-size: 36px; font-weight: 700; color: var(--text-1); }
-.hero p { font-size: 16px; color: var(--text-2); }
+.hero h1 { font-size: 38px; font-weight: 700; color: #fff; }
+.hero p { font-size: 16px; color: rgba(255,255,255,.85); }
 .hero-search {
   display: flex; align-items: center; gap: 10px;
-  background: var(--fill-2);
+  background: rgba(255,255,255,.18);
   width: 480px; max-width: 100%; height: 48px; padding: 0 16px;
   border-radius: 10px; margin-top: 8px;
 }
 .hero-search input {
   border: none; background: transparent; outline: none;
-  font-family: var(--font-cn); font-size: 15px; color: var(--text-1); width: 100%;
+  font-family: var(--font-cn); font-size: 15px; color: #fff; width: 100%;
 }
-.hero-search input::placeholder { color: var(--text-ph); }
+.hero-search input::placeholder { color: rgba(255,255,255,.7); }
+.hero-scroll {
+  position: absolute; right: 28px; bottom: 20px;
+  color: rgba(255,255,255,.85);
+  animation: heroBounce 1.6s ease-in-out infinite;
+}
+@keyframes heroBounce { 0%,100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
 
 /* ---------- 区块标题 ---------- */
 .section-head {
