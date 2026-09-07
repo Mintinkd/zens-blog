@@ -18,7 +18,6 @@ export const NAV = [
   { label: '文章', href: '/posts' },
   { label: '分类', href: '/category' },
   { label: '标签', href: '/tag' },
-  { label: '关于', href: '/about' },
 ];
 
 export const SOCIAL = [
